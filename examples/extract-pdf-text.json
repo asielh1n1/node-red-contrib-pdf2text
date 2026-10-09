@@ -1,0 +1,99 @@
+[
+    {
+        "id": "pdf2text-example-f1",
+        "type": "inject",
+        "z": "pdf2text-example",
+        "name": "Read PDF",
+        "props": [
+            {
+                "p": "filename",
+                "v": "D:/Work/test/Vector fiscal.pdf",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.2,
+        "topic": "",
+        "x": 160,
+        "y": 120,
+        "wires": [
+            [
+                "pdf2text-example-f2"
+            ]
+        ]
+    },
+    {
+        "id": "pdf2text-example-f2",
+        "type": "function",
+        "z": "pdf2text-example",
+        "name": "file -> Buffer",
+        "func": "msg.payload = fs.readFileSync(msg.filename);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 120,
+        "wires": [
+            [
+                "pdf2text-example-f3"
+            ]
+        ]
+    },
+    {
+        "id": "pdf2text-example-f3",
+        "type": "pdf2text",
+        "z": "pdf2text-example",
+        "name": "Extract text",
+        "inputProp": "payload",
+        "outputProp": "payload",
+        "firstPage": "",
+        "lastPage": "",
+        "x": 570,
+        "y": 120,
+        "wires": [
+            [
+                "pdf2text-example-f4",
+                "pdf2text-example-f5"
+            ]
+        ]
+    },
+    {
+        "id": "pdf2text-example-f4",
+        "type": "debug",
+        "z": "pdf2text-example",
+        "name": "text",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "pdf2text-example-f5",
+        "type": "debug",
+        "z": "pdf2text-example",
+        "name": "meta",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "pdf2text",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 790,
+        "y": 140,
+        "wires": []
+    }
+]

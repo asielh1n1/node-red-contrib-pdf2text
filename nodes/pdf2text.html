@@ -1,0 +1,79 @@
+<script type="text/html" data-template-name="pdf2text">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="pdf2text">
+    </div>
+    <div class="form-row">
+        <label for="node-input-inputProp"><i class="fa fa-sign-in"></i> PDF property</label>
+        <input type="text" id="node-input-inputProp" placeholder="payload">
+        <input type="hidden" id="node-input-inputProp-type">
+    </div>
+    <div class="form-row">
+        <label for="node-input-outputProp"><i class="fa fa-sign-out"></i> Output property</label>
+        <input type="text" id="node-input-outputProp" placeholder="payload">
+        <input type="hidden" id="node-input-outputProp-type">
+    </div>
+    <div class="form-row">
+        <label for="node-input-firstPage"><i class="fa fa-list-ol"></i> First page</label>
+        <input type="number" id="node-input-firstPage" min="1" step="1" placeholder="(all)">
+    </div>
+    <div class="form-row">
+        <label for="node-input-lastPage"><i class="fa fa-list-ol"></i> Last page</label>
+        <input type="number" id="node-input-lastPage" min="1" step="1" placeholder="(all)">
+    </div>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType("pdf2text", {
+        category: "parser",
+        color: "#C0DEED",
+        defaults: {
+            name:           { value: "" },
+            inputProp:      { value: "payload" },
+            inputPropType:  { value: "msg" },
+            outputProp:     { value: "payload" },
+            outputPropType: { value: "msg" },
+            firstPage:      { value: "", validate: RED.validators.number() },
+            lastPage:       { value: "", validate: RED.validators.number() }
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: "font-awesome/fa-file-text-o",
+        label: function () {
+            return this.name || "pdf2text";
+        },
+        paletteLabel: "pdf2text",
+        oneditprepare: function () {
+            // PDF property: reads a message property (the PDF Buffer) -> msg. payload
+            $("#node-input-inputProp").typedInput({
+                types: ["msg"],
+                typeField: "#node-input-inputProp-type"
+            });
+            // Output property: writes the extracted text to a message property
+            $("#node-input-outputProp").typedInput({
+                types: ["msg"],
+                typeField: "#node-input-outputProp-type"
+            });
+        }
+    });
+</script>
+
+<script type="text/html" data-help-name="pdf2text">
+    <p>Extracts the text of a PDF supplied as binary data (<code>Buffer</code>).</p>
+    <h3>Inputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">Buffer</span></dt>
+        <dd>The PDF document (or the property configured in <b>PDF property</b>). A string is rejected: configure the upstream node (e.g. <code>file</code>) to output a Buffer.</dd>
+    </dl>
+    <h3>Outputs</h3>
+    <dl class="message-properties">
+        <dt>payload <span class="property-type">string</span></dt>
+        <dd>The extracted text, written to the property configured in <b>Output property</b>.</dd>
+        <dt>pdf2text <span class="property-type">object</span></dt>
+        <dd>Result metadata: <code>success</code>, <code>totalPages</code>, <code>pages</code>, <code>fromPage</code>, <code>toPage</code>, <code>elapsedMs</code>.</dd>
+    </dl>
+    <h3>Details</h3>
+    <p>Powered by <a href="https://github.com/unjs/unpdf" target="_blank">unpdf</a> (PDF.js).</p>
+    <p>Use <b>First page</b> / <b>Last page</b> to limit the extraction range (1-based, inclusive). Leave them empty to extract the whole document.</p>
+    <p>If the input is not a Buffer, or the page range is invalid, the node raises an explicit error.</p>
+</script>

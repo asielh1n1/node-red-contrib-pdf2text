@@ -1,0 +1,46 @@
+{
+  "name": "node-red-contrib-pdf2text",
+  "version": "0.1.0",
+  "description": "Node-RED node that extracts text from a PDF Buffer using unpdf (PDF.js).",
+  "keywords": [
+    "node-red",
+    "node-red-node",
+    "pdf",
+    "pdf2text",
+    "unpdf",
+    "pdfjs",
+    "text-extraction",
+    "extract-text"
+  ],
+  "license": "MIT",
+  "author": "Asiel Hernandez Valdes",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/<your-user>/node-red-contrib-pdf2text.git"
+  },
+  "bugs": {
+    "url": "https://github.com/<your-user>/node-red-contrib-pdf2text/issues"
+  },
+  "homepage": "https://github.com/<your-user>/node-red-contrib-pdf2text#readme",
+  "engines": {
+    "node": ">=18"
+  },
+  "files": [
+    "nodes",
+    "examples",
+    "README.md",
+    "LICENSE"
+  ],
+  "node-red": {
+    "version": ">=3.0.0",
+    "nodes": {
+      "pdf2text": "nodes/pdf2text.js"
+    }
+  },
+  "dependencies": {
+    "unpdf": "^1.8.1"
+  },
+  "scripts": {
+    "test": "node test/smoke.js && node test/nr-harness.js"
+  }
+}
